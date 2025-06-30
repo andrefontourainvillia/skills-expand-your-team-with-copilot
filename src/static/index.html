@@ -124,13 +124,21 @@
         <h3>Register for <span id="modal-activity-name"></span></h3>
         <form id="signup-form">
           <div class="form-group">
-            <label for="email">Student Email:</label>
-            <input
-              type="email"
-              id="email"
-              required
-              placeholder="your-email@mergington.edu"
-            />
+            <label for="student-input">Student Username:</label>
+            <div class="input-group">
+              <input
+                type="text"
+                id="student-input"
+                required
+                placeholder="Enter student username (e.g., michael)"
+                autocomplete="off"
+              />
+              <span class="domain-suffix">@mergington.edu</span>
+            </div>
+            <datalist id="student-suggestions">
+              <!-- Student suggestions will be populated here -->
+            </datalist>
+            <small class="input-hint">Just type the username - the domain will be added automatically</small>
           </div>
           <input type="hidden" id="activity" value="" />
           <button type="submit">Register</button>
