@@ -125,3 +125,23 @@ def unregister_from_activity(activity_name: str, email: str, teacher_username: O
         raise HTTPException(status_code=500, detail="Failed to update activity")
     
     return {"message": f"Unregistered {email} from {activity_name}"}
+
+@router.get("/student-suggestions", response_model=List[str])
+def get_student_suggestions() -> List[str]:
+    """Get a list of student usernames (without @mergington.edu) from all activities for autocomplete"""
+    # Get all unique emails from all activities
+    pipeline = [
+        {"$unwind": "$participants"},
+        {"$group": {"_id": "$participants"}},
+        {"$sort": {"_id": 1}}
+    ]
+    
+    suggestions = []
+    for email_doc in activities_collection.aggregate(pipeline):
+        email = email_doc["_id"]
+        # Extract username part (before @mergington.edu)
+        if "@mergington.edu" in email:
+            username = email.replace("@mergington.edu", "")
+            suggestions.append(username)
+    
+    return suggestions

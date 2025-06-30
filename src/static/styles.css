@@ -664,3 +664,48 @@ footer {
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
+
+/* Improved input group styles for simplified registration */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--surface);
+  transition: border-color 0.2s;
+}
+
+.input-group:focus-within {
+  border-color: var(--primary);
+  outline: 2px solid rgba(26, 35, 126, 0.1);
+}
+
+.input-group input {
+  flex: 1;
+  border: none;
+  padding: 8px 12px;
+  background: transparent;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.input-group input:focus {
+  outline: none;
+}
+
+.domain-suffix {
+  padding: 8px 12px;
+  background-color: var(--border-light);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  border-left: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.input-hint {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}

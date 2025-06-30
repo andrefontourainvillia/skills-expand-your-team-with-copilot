@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const activityInput = document.getElementById("activity");
   const closeRegistrationModal = document.querySelector(".close-modal");
+  const studentInput = document.getElementById("student-input");
+  const studentSuggestions = document.getElementById("student-suggestions");
 
   // Search and filter elements
   const searchInput = document.getElementById("activity-search");
@@ -824,8 +826,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const email = document.getElementById("email").value;
+    const username = document.getElementById("student-input").value.trim();
     const activity = activityInput.value;
+
+    // Validate username is not empty
+    if (!username) {
+      showMessage("Please enter a student username.", "error");
+      return;
+    }
+
+    // Create full email address
+    const email = `${username}@mergington.edu`;
 
     try {
       const response = await fetch(
@@ -855,6 +866,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Load student suggestions for autocomplete
+  async function loadStudentSuggestions() {
+    try {
+      const response = await fetch("/activities/student-suggestions");
+      if (response.ok) {
+        const suggestions = await response.json();
+        populateStudentSuggestions(suggestions);
+      }
+    } catch (error) {
+      console.error("Error loading student suggestions:", error);
+    }
+  }
+
+  // Populate the datalist with student suggestions
+  function populateStudentSuggestions(suggestions) {
+    studentSuggestions.innerHTML = "";
+    suggestions.forEach(username => {
+      const option = document.createElement("option");
+      option.value = username;
+      studentSuggestions.appendChild(option);
+    });
+    
+    // Set up the autocomplete attribute
+    studentInput.setAttribute("list", "student-suggestions");
+  }
+
   // Expose filter functions to window for future UI control
   window.activityFilters = {
     setDayFilter,
@@ -864,5 +901,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize app
   checkAuthentication();
   initializeFilters();
+  loadStudentSuggestions();
   fetchActivities();
 });
